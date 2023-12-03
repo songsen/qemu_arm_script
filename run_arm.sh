@@ -9,12 +9,12 @@ source build_kernel.sh
 
 source build_uboot.sh
 
-source run_qemu.sh
+source qemu_arm.sh
 
-
+source make_sd_card.sh
 
 # 定义选项和参数的规则  
-OPTS="hv:b:s:u:k:"  
+OPTS="hv:b:s:u:k:c:"  
 ARGS=""  
 
 # 解析命令行选项和参数  
@@ -35,7 +35,10 @@ while getopts "$OPTS" opt; do
         v)  
             echo "Version: $0, OPTARG=$OPTARG"  
             exit 0  
-        ;;  
+        ;;
+        c)
+            make_sd_card $OPTARG
+        ;; 
         *)  
             echo "Invalid option: $opt"  
             exit 1  

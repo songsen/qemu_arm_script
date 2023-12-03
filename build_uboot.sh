@@ -26,6 +26,19 @@ function test_uboot()
                      # -netdev tap,id=n2 -device virtio-net,netdev=n2.
 }
 
+function test_uboot_sd()
+{
+    cd $UBOOT_SOURCE_ROOT
+    qemu-system-arm   -M vexpress-a9 \
+                     -kernel u-boot \
+                     -nographic      \
+                     -m 512M          \
+                     -net nic -net tap,ifname=tap0,script=no,downscript=no \
+                     -sd $BUILD_ROOT/fs_vexpress_1G.img
+                     # -netdev tap,id=nd0,ifname=tap0 -device e1000,netdev=nd0
+                     # -netdev tap,id=n2 -device virtio-net,netdev=n2.
+}
+
 function build_uboot_type()
 {
     case $1 in
@@ -42,6 +55,10 @@ function build_uboot_type()
         'test') 
             echo "start testing uboot..." 
             test_uboot
+        ;;
+        'sd') 
+            echo "start testing uboot..." 
+            test_uboot_sd
         ;;
         *)
             echo "nothing to do. "
